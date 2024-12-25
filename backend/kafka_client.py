@@ -2,10 +2,10 @@ import threading
 from typing import Optional
 from confluent_kafka import Consumer, KafkaException
 from flask_socketio import SocketIO
-from .topic_manager import TopicManager
-from .schema_manager import SchemaManager
-from .message_deserializer import MessageDeserializer
-from .metrics_manager import MetricsManager
+from topic_manager import TopicManager
+from schema_manager import SchemaManager
+from message_deserializer import MessageDeserializer
+from metrics_manager import MetricsManager
 from config import Config
 
 class KafkaClient:
@@ -33,17 +33,14 @@ class KafkaClient:
         """Create a Kafka consumer with the configured settings"""
         conf = {
             'bootstrap.servers': Config.KAFKA_BOOTSTRAP_SERVERS,
-            'group.id': 'kafka_dashboard',
-            'auto.offset.reset': 'earliest',
+            'group.id': "rdlibconsumer1",
+            'auto.offset.reset': 'earliest',  # Changez en 'latest' si nécessaire
+            'security.protocol': 'SASL_SSL',
+            'sasl.mechanism': 'PLAIN',
+            'sasl.username': Config.KAFKA_API_KEY,
+            'sasl.password': Config.KAFKA_API_SECRET,
         }
         
-        if hasattr(Config, 'KAFKA_API_KEY') and hasattr(Config, 'KAFKA_API_SECRET'):
-            conf.update({
-                'security.protocol': 'SASL_SSL',
-                'sasl.mechanism': 'PLAIN',
-                'sasl.username': Config.KAFKA_API_KEY,
-                'sasl.password': Config.KAFKA_API_SECRET,
-            })
 
         return Consumer(conf)
 

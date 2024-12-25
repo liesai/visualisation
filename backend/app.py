@@ -5,10 +5,14 @@ from config import Config
 from topic_manager import TopicManager
 from schema_manager import SchemaManager
 from socket_handlers import KafkaNamespace
+from api import api
 
 app = Flask(__name__)
 app.config.from_object(Config)
 socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Register API blueprint
+app.register_blueprint(api)
 
 # Initialize managers
 topic_manager = TopicManager()

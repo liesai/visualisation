@@ -1,6 +1,6 @@
 from flask_socketio import Namespace, emit
-from .topic_manager import TopicManager
-from .schema_manager import SchemaManager
+from topic_manager import TopicManager
+from schema_manager import SchemaManager
 import base64
 
 class KafkaNamespace(Namespace):
